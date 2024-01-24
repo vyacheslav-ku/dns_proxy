@@ -1,0 +1,8 @@
+PROXY_HOST = "proxy_host"
+PROXY_PORT = "proxy_port"
+WWW = "www."
+EMPTY = ""
+FAKE_MESSAGE = " FAKE RESPONSE"
+REPLACED = " REPLACED"
+FAKE_RESPONSE_COUNT = "fake_response_count"
+REPLACE_DNS = "replace_dns"

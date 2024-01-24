@@ -1,0 +1,14 @@
+proxy_host: "0.0.0.0"
+proxy_port: 53
+fake_response:
+  host: "1.2.3.44"
+  ttl: 666
+replace_dns:
+  "crm.bucheon.uz.": "144.44.41.232"
+dns_forwarders:
+  host: "8.8.8.8"
+  port: 53
+
+black_list_domains:
+  - "pornhub.com"
+load_black_list: True

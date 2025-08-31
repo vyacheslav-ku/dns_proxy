@@ -9,10 +9,8 @@ import sys
 from loguru import logger
 
 cfg = load_config()
-# Убираем все хендлеры, включая дефолтный
 logger.remove()
 
-# Добавляем только то, что нам нужно
 logger.add(sys.stdout, colorize=True, level=cfg.get("LOG_LEVEL", "DEBUG"))
 
 logger.remove()
@@ -62,7 +60,7 @@ def check_black_list(query_name):
 
 
 def check_for_replace_dns(dns_name: str = ""):
-    return cfg.get(REPLACE_DNS).get(dns_name, False)
+    return cfg.get(REPLACE_DNS, {}).get(dns_name, False)
 
 
 def dns_proxy(query_data, client_address):

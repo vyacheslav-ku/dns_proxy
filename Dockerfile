@@ -10,15 +10,22 @@ FROM python AS poetry
 ENV POETRY_HOME=/opt/poetry
 ENV POETRY_VIRTUALENVS_IN_PROJECT=true
 ENV PATH="$POETRY_HOME/bin:$PATH"
-RUN python -c 'from urllib.request import urlopen; print(urlopen("https://install.python-poetry.org").read().decode())' | python -
-COPY . ./
-RUN poetry install --no-interaction --no-ansi -vvv
+#RUN python -c 'from urllib.request import urlopen; print(urlopen("https://install.python-poetry.org").read().decode())' | python -
+COPY poetry.lock .
+COPY pyproject.toml .
+RUN pip3 install  poetry==2.1.4 && poetry install --no-interaction --no-ansi -vvv && rm -fr poetry.lock pyproject.toml
+#COPY . ./
+#RUN poetry install --no-interaction --no-ansi -vvv
 
 
 
 FROM python AS runtime
 ENV PATH="/app/.venv/bin:$PATH"
 COPY --from=poetry /app /app
+COPY config.yaml .
+COPY constants.py .
+COPY proxy_dns.py .
+COPY utils.py .
 EXPOSE 8000
 WORKDIR /app/
 CMD ["python", "proxy_dns.py"]

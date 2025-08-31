@@ -3,10 +3,11 @@ volumes:
   data:
 services:
   proxy_dns:
-    image: danubise/proxy_dns:1
+    image: danubise/proxy_dns:8
     ports:
       - "53:53/udp"
     volumes:
       - ./config.yaml:/app/config.yaml
+      - ./blacklist.txt:/app/blacklist.txt
 
 #$IPT -t nat -A POSTROUTING -o ens192 -s 192.168.0.0/16 -j MASQUERADE

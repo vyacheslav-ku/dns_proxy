@@ -3,11 +3,22 @@
 from dnslib import DNSRecord, DNSQuestion, QTYPE, RR, A
 import socket
 import threading
-from loguru import logger
 from constants import PROXY_HOST, PROXY_PORT, WWW, EMPTY, FAKE_MESSAGE, FAKE_RESPONSE_COUNT, REPLACE_DNS, REPLACED
 from utils import load_config, build_db, load_black_list
+import sys
+from loguru import logger
 
 cfg = load_config()
+# Убираем все хендлеры, включая дефолтный
+logger.remove()
+
+# Добавляем только то, что нам нужно
+logger.add(sys.stdout, colorize=True, level=cfg.get("LOG_LEVEL", "DEBUG"))
+
+logger.remove()
+logger.propagate = False
+
+logger.add(sys.stdout, colorize=True)
 
 # Define the IP and port for your DNS proxy server
 proxy_host = cfg.get(PROXY_HOST, "0.0.0.0")  # Listen on all available network interfaces
@@ -18,9 +29,9 @@ forward = cfg.get("dns_forwarders")
 dns_server = (forward.get("host"), forward.get("port"))
 
 local_db = build_db(cfg.get("black_list_domains"))
-logger.debug(local_db)
+logger.debug(f"Loaded from config : {local_db}")
 if cfg.get("load_black_list"):
-    local_db = load_black_list(local_db)
+    local_db = load_black_list(local_db, cfg)
 
 fttl = cfg.get("fake_response").get("ttl")
 fA = A(cfg.get("fake_response").get("host"))
@@ -90,8 +101,8 @@ def forward_dns_query(query_data, server_address):
 
 # Create a socket to listen for DNS queries
 with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as server_socket:
+    logger.debug(f"DNS proxy server listening on {proxy_host} port {proxy_port}")
     server_socket.bind((proxy_host, proxy_port))
-    logger.debug("DNS proxy server listening on", proxy_host, "port", proxy_port)
 
     while True:
         try:

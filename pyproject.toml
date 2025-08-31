@@ -4,12 +4,13 @@ version = "0.1.0"
 description = ""
 authors = ["Vyacheslav <danubise@gmail.com>"]
 readme = "README.md"
+package-mode = false
 
 [tool.poetry.dependencies]
-python = "^3.10"
-dnslib = "^0.9.23"
-pyyaml = "^6.0.1"
-loguru = "^0.7.2"
+python = "^3.12"
+dnslib = "^0.9.26"
+pyyaml = "^6.0.2"
+loguru = "^0.7.3"
 
 
 [build-system]

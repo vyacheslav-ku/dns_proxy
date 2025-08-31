@@ -1,7 +1,7 @@
 proxy_host: "0.0.0.0"
 proxy_port: 53
 fake_response:
-  host: "1.2.3.44"
+  host: "0.0.0.0"
   ttl: 666
 replace_dns:
   "crm.bucheon.uz.": "144.44.41.232"
@@ -12,3 +12,8 @@ dns_forwarders:
 black_list_domains:
   - "pornhub.com"
 load_black_list: True
+# Если слово из списка присутствует в доменном имени которое загружается из backlist.txt
+# тогда доменное имя не будет добавлено в базу данных.
+# Данный фильтр работает только при загрузке базы данных из backlist.txt
+allow_template_list:
+  - "Надо указать доменное имя"

@@ -2,11 +2,11 @@ version: '3'
 volumes:
   data:
 services:
-  dns:
+  proxy_dns:
     image: danubise/proxy_dns:1
     ports:
       - "53:53/udp"
-#    volumes:
-#      - ./api/config_composer.yaml:/app/api/config.yaml
+    volumes:
+      - ./config.yaml:/app/config.yaml
 
 #$IPT -t nat -A POSTROUTING -o ens192 -s 192.168.0.0/16 -j MASQUERADE

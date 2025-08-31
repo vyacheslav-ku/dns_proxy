@@ -30,8 +30,19 @@ def add_record(db, record):
     return db
 
 
-def load_black_list(db: dict):
+def load_black_list(db: dict, cfg: dict):
+    count_lines = 0
     with open("blacklist.txt") as f:
         for line in f:
+            skip = False
+            for template in cfg["allow_template_list"]:
+                if template in line:
+                    skip = True
+                    print(f"skipping {template} in blacklist {line}")
+                    break
+            if skip:
+                continue
+            count_lines += 1
             db = add_record(db, line)
+    print(f"loaded {count_lines} lines from blacklist")
     return db
